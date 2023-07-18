@@ -93,13 +93,42 @@ template.innerHTML = `
             
         }
 
+        .outcome_odds{
+            margin-bottom:15px
+
+        }
+
+        
+
         img {
-            max-width: 100px;
+            width: 109px;
+            height: 120px;
         }
 
         .draw{
-            margin-top: 120px;
+            margin-top: 123px;
         }
+
+        button{
+            padding: 12px 24px;
+            margin-left: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #ffffff;
+            background-color: #00b925;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.5s ease-in-out;
+            border: 1px solid black;
+        }
+        button:hover{
+            background-color:#f5f840;
+            color: black;
+            border: 1px solid black;
+        }
+
+        
 
     </style>
     <div id ="league" >
@@ -128,6 +157,8 @@ class League extends HTMLElement {
         this.url = this.prod ? this.prodUrl : this.nonProdUrl;
         this.target = this.prod ? this.prodTarget : this.nonProdTarget;
 
+        this.stylesChanged = false; //to control de styles
+
         //  this.leagueId = this.getAttribute('leagueId');
     }
 
@@ -154,6 +185,54 @@ class League extends HTMLElement {
         this.$league.innerHTML = this.loadingText;
         //   this.$odds.href = this.target + "?affiliateId=" + this.affiliateId // default url in case no odds found.
         this.getEvents(this.leagueId);
+
+        const $container = document.createElement('div');
+        $container.style.position = 'relative'; // Para que el botón se posicione correctamente
+
+        // Agregar botón al contenedor
+        const $button = document.createElement('button');
+        $button.innerText = 'Change view';
+        $button.addEventListener('click', this.changeStyles.bind(this));
+        $container.appendChild($button);
+
+        // Agregar #league al contenedor
+        this.$league = this._shadowRoot.querySelector('#league');
+        $container.appendChild(this.$league);
+
+        // Agregar el contenedor al shadow DOM
+        this._shadowRoot.appendChild($container);
+    }
+
+    changeStyles() {
+        // Generar un color de fondo aleatorio en formato hexadecimal
+        if (!this.stylesChanged) {
+            this.$league.style.display = 'flex';
+            this.$league.style.flexWrap = 'wrap';
+            
+            
+
+
+            const eventItems = this.$league.querySelectorAll('.event_data');
+            eventItems.forEach(item => {
+                item.style.width = 'calc(20% - 20px);';
+                item.style.boxSizing = 'border-box';
+                item.style.flexGrow = 1;
+            });
+            this.stylesChanged = true;
+        } else {
+            // Revertir los cambios
+            this.$league.style.backgroundColor = '';
+            this.$league.style.display = '';
+            this.$league.style.flexWrap = '';
+
+            const eventItems = this.$league.querySelectorAll('.event_data');
+            eventItems.forEach(item => {
+                item.style.width = '';
+                item.style.boxSizing = '';
+            });
+
+            this.stylesChanged = false; // Actualizar el estado de los estilos
+        }
     }
 
 
@@ -306,31 +385,24 @@ class League extends HTMLElement {
 
                     //Home or away shirt
 
-                    const imageUrlFinal = `https://lancebet-com-prod.eyasgaming.net/content/dam/eyas-web/images/team-colours/football/england/${teamName}-${teamValue}.png`;
+                    const imageUrlFinal = `https://lancebet-com-prod.eyasgaming.net/content/dam/eyas-web/images/team-colours/football/england/${teamName}-${teamValue}.png`
+
+                    const imageUrlFinalAux = `https://lancebet-com-prod.eyasgaming.net/content/dam/eyas-web/images/team-colours/football/generic-${teamValue}.png`;
 
 
 
                     //shirts on the screen
-                    
+
 
                     if ($outcome.className !== "draw") {
                         const $greetingDiv = document.createElement('div');
                         $greetingDiv.className = "outcome_shirts";
                         const $teamImage = document.createElement('img');
-                        fetch(imageUrlFinal)
-                            .then(response => {
-                                if (!response.ok) {
-                                    
-                                    $teamImage.src = "https://lancebet-com-prod.eyasgaming.net/content/dam/eyas-web/images/team-colours/football/generic-away.png" ;
-                                } else {
-                                    $teamImage.src = imageUrl;
-                                }
-                            })
-                            .catch(error => {
-                                // En caso de error, también usar la URL de imagen genérica
-                                $teamImage.src = "https://lancebet-com-prod.eyasgaming.net/content/dam/eyas-web/images/team-colours/football/generic-away.png";
-                            });
-                        
+                        $teamImage.src = imageUrlFinal;
+                        $teamImage.onerror = () => {
+                            // If an error exist use URL alternative
+                            $teamImage.src = imageUrlFinalAux;
+                        };
                         $greetingDiv.appendChild($teamImage);
                         $outcome.appendChild($greetingDiv);
 
