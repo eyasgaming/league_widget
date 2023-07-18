@@ -147,7 +147,7 @@ template.innerHTML = `
             border: 1px solid black;
         }
         button:hover{
-            background-color:#f5f840;
+            background-color:#dce9fc;
             color: black;
             border: 1px solid black;
         }
@@ -244,51 +244,96 @@ class League extends HTMLElement {
             this.$league.style.display = 'flex';
             this.$league.style.flexWrap = 'wrap';
 
-
+            const windowWidth = window.innerWidth;
+            const isMobile = windowWidth <= 768;
+            const isMobile2 = windowWidth >= 900;
 
 
             const eventItems = this.$league.querySelectorAll('.event_data');
             eventItems.forEach(item => {
                 item.style.width = 'calc(50% - 20px)';
                 item.style.minWidth = '350px';
-
-                
-                
-
-
                 item.style.flexGrow = 1;
+            });
+
+            const eventName = this.$league.querySelectorAll('.event_name');
+            eventName.forEach(item => {
+                item.style.fontSize = isMobile ? '14px' : '18px';
+                item.style.whiteSpace = isMobile ? 'nowrap': 'normal';
+                item.style.maxWidth = isMobile ? '150px' : '350px';
+                
+            });
+
+            const outcomeDate = this.$league.querySelectorAll('.event_date');
+            outcomeDate.forEach(item => {
+                item.style.fontSize = isMobile ? '13px' : '16px';
             });
 
             const outcomeNames = this.$league.querySelectorAll('.outcome_name');
             outcomeNames.forEach(item => {
-                item.style.marginLeft = '20%'; // Agregar margen izquierdo de 50px a las clases 'outcome_name'
+                item.style.marginLeft = '16%'; 
+                item.style.textOverflow = 'ellipsis';
+                item.style.whiteSpace = isMobile ? 'nowrap': 'normal';
+                item.style.maxWidth = '150px';
             });
 
             const outcomeShirt = this.$league.querySelectorAll('.outcome_shirts');
             outcomeShirt.forEach(item => {
-                item.style.marginLeft = '28%'; // Agregar margen izquierdo de 50px a las clases 'outcome_name'
+                item.style.marginLeft = isMobile ? '36%': '33%'; 
+                item.style.marginLeft = isMobile2 ? '28%': '33%'; 
             });
+
+            
 
             const outcomeOdds = this.$league.querySelectorAll('.outcome_odds');
             outcomeOdds.forEach(item => {
-                item.style.marginLeft = '20%'; // Agregar margen izquierdo de 50px a las clases 'outcome_name'
-                
+                item.style.marginLeft = '22%'; 
+
             });
             this.stylesChanged = true;
         } else {
-            // Revert changes
-            this.$league.style.backgroundColor = '';
             this.$league.style.display = '';
             this.$league.style.flexWrap = '';
-
+          
             const eventItems = this.$league.querySelectorAll('.event_data');
             eventItems.forEach(item => {
-                item.style.width = '';
-                item.style.boxSizing = '';
+              item.style.width = '';
+              item.style.minWidth = '';
+              item.style.flexGrow = '';
             });
-
+          
+            const eventName = this.$league.querySelectorAll('.event_name');
+            eventName.forEach(item => {
+              item.style.fontSize = '';
+              item.style.whiteSpace = '';
+              item.style.maxWidth = '';
+            });
+          
+            const outcomeDate = this.$league.querySelectorAll('.event_date');
+            outcomeDate.forEach(item => {
+              item.style.fontSize = '';
+            });
+          
+            const outcomeNames = this.$league.querySelectorAll('.outcome_name');
+            outcomeNames.forEach(item => {
+              item.style.marginLeft = '';
+              item.style.textOverflow = '';
+              item.style.whiteSpace = '';
+              item.style.maxWidth = '';
+            });
+          
+            const outcomeShirt = this.$league.querySelectorAll('.outcome_shirts');
+            outcomeShirt.forEach(item => {
+              item.style.marginLeft = '';
+            });
+          
+            const outcomeOdds = this.$league.querySelectorAll('.outcome_odds');
+            outcomeOdds.forEach(item => {
+              item.style.marginLeft = '';
+            });
+          
             this.stylesChanged = false;
-        }
+          }
     }
 
 
