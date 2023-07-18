@@ -189,10 +189,10 @@ class League extends HTMLElement {
         const $container = document.createElement('div');
         $container.style.position = 'relative';
         $container.innerText = 'Inglaterra - Premier League';
-        $container.style.marginLeft = '5px'; // Agrega un margen de 10px en todos los lados
-        $container.style.marginBottom = '20px'; // Agrega un margen de 10px en todos los lados
-        $container.style.fontSize = '25px'; // Establece el tamaño de la fuente a 15px
-        $container.style.fontWeight = '600'; // Establece el tamaño de la fuente a 15px
+        $container.style.marginLeft = '5px'; 
+        $container.style.marginBottom = '20px'; 
+        $container.style.fontSize = '25px'; 
+        $container.style.fontWeight = '600'; 
         $container.style.color = '#06379d'; // Establece el color del texto a azul
 
         const $container2 = document.createElement('div');
