@@ -2,7 +2,7 @@
 
 :root {
     --green: #00b925; 
-    --blue: #06379d:
+    --blue: #06379d;
 }
 
 body {
@@ -11,7 +11,7 @@ body {
 }
 
 .title{
-    background-color: var(--green);
+    background-color: var(--blue);
 
 }
 

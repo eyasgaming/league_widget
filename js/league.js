@@ -10,7 +10,7 @@ template.innerHTML = `
     <style>
         :root {
             --green: #00b925; 
-            --blue: #06379d:
+            --blue: #06379d;
             
         }
         #league {
@@ -23,7 +23,7 @@ template.innerHTML = `
 
         .event_data {
             
-            border: 1px solid var(--green);
+            border: 1px solid var(--blue);
             margin: 5px;
             padding: 5px;
             border-radius: 12px;
@@ -66,7 +66,7 @@ template.innerHTML = `
         a { 
             background-color: #e9e9e9;
             text-decoration: none;
-            color: var(--green);
+            color: var(--blue);
             font-size: bold;
             display:block;
             padding: 18px;
@@ -115,7 +115,7 @@ template.innerHTML = `
             font-size: 16px;
             font-weight: bold;
             color: #ffffff;
-            background-color: #00b925;
+            background-color: var(--blue);
             border: none;
             border-radius: 6px;
             cursor: pointer;
