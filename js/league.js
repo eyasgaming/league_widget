@@ -187,29 +187,40 @@ class League extends HTMLElement {
         this.getEvents(this.leagueId);
 
         const $container = document.createElement('div');
-        $container.style.position = 'relative'; // Para que el botón se posicione correctamente
+        $container.style.position = 'relative';
+        $container.innerText = 'Inglaterra - Premier League';
+        $container.style.marginLeft = '5px'; // Agrega un margen de 10px en todos los lados
+        $container.style.marginBottom = '20px'; // Agrega un margen de 10px en todos los lados
+        $container.style.fontSize = '25px'; // Establece el tamaño de la fuente a 15px
+        $container.style.fontWeight = '600'; // Establece el tamaño de la fuente a 15px
+        $container.style.color = '#06379d'; // Establece el color del texto a azul
 
-        // Agregar botón al contenedor
+        const $container2 = document.createElement('div');
+        $container2.style.position = 'relative';
+
+        // Add button to container
         const $button = document.createElement('button');
         $button.innerText = 'Change view';
         $button.addEventListener('click', this.changeStyles.bind(this));
-        $container.appendChild($button);
+        $container2.appendChild($button);
 
-        // Agregar #league al contenedor
+        // Add #league to container
         this.$league = this._shadowRoot.querySelector('#league');
-        $container.appendChild(this.$league);
+        $container2.appendChild(this.$league);
 
-        // Agregar el contenedor al shadow DOM
+        // Add to container to shadow DOM
         this._shadowRoot.appendChild($container);
+        this._shadowRoot.appendChild($container2);
+
     }
 
     changeStyles() {
-        // Generar un color de fondo aleatorio en formato hexadecimal
+
         if (!this.stylesChanged) {
             this.$league.style.display = 'flex';
             this.$league.style.flexWrap = 'wrap';
-            
-            
+
+
 
 
             const eventItems = this.$league.querySelectorAll('.event_data');
@@ -220,7 +231,7 @@ class League extends HTMLElement {
             });
             this.stylesChanged = true;
         } else {
-            // Revertir los cambios
+            // Revert changes
             this.$league.style.backgroundColor = '';
             this.$league.style.display = '';
             this.$league.style.flexWrap = '';
@@ -231,7 +242,7 @@ class League extends HTMLElement {
                 item.style.boxSizing = '';
             });
 
-            this.stylesChanged = false; // Actualizar el estado de los estilos
+            this.stylesChanged = false;
         }
     }
 
