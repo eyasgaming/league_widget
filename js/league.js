@@ -23,28 +23,40 @@ template.innerHTML = `
 
         .event_data {
             
-            border: 1px solid var(--blue);
+            
             margin: 5px;
             padding: 5px;
             border-radius: 12px;
             background: #ffffff;
             color: #000000;
-            min-width: 500px;
+            min-width: 367px;
+            height: 263px;
             box-shadow: 3px 2px 4px rgba(0, 0, 0, 0.2);
+            color: var(--blue);
+            position: relative;
             
             
             
         }
         .event_name {
-            font-weight: bold;
-            font-size: 1em;
+            font-weight: 800;
+            font-size: 14px;
             margin: 15px 15px;
+            max-width: 200px; 
+            display: inline-block;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+
             
         }
         .event_date {
-            margin: 5px 15px;
+            margin: 20px 15px 10px;
             display: block;
-            font-size: 12px;
+            font-size: 13px;
+            position: absolute;
+            top: 0;
+            right: 0;
             
             
          }
@@ -56,7 +68,7 @@ template.innerHTML = `
             text-transform: uppercase  ;
             overflow: hidden;
             text-overflow: ellipsis;
-            text-align: center;
+            
             margin-bottom: 20px;
             font-weight: 550;
             font-size: 12px;
@@ -66,6 +78,7 @@ template.innerHTML = `
         a { 
             background-color: #e9e9e9;
             text-decoration: none;
+            width: 60px; 
             color: var(--blue);
             font-size: bold;
             display:block;
@@ -73,40 +86,51 @@ template.innerHTML = `
             border-radius: 6px;
             text-align: center;
             margin: 0 10px;
+            font-weight: 900;
             transition: 300ms;
             box-shadow: 3px 2px 4px rgba(0, 0, 0, 0.2);
+            
         }
 
         a:hover {
-            background-color: #f3f2d0;
+            background-color: #dce9fc;
             
         }
         
 
         .outcome_name {
-            margin: 15px 0;
-            display: -webkit-box;
-            -webkit-line-clamp: 1; /* Número máximo de líneas a mostrar */
-            -webkit-box-orient: vertical;
+            
+            margin: 15px 0px;
+            max-width: 120px; 
+            text-align: center;
             overflow: hidden;
             text-overflow: ellipsis;
+            white-space: nowrap;
+            font-weight: 800;
             
         }
 
         .outcome_odds{
             margin-bottom:15px
+            
+
+        }
+
+        .outcome_shirts{
+            margin-left:19%;
+            
 
         }
 
         
 
         img {
-            width: 109px;
-            height: 120px;
+            width: 76px;
+            height: 84px;
         }
 
         .draw{
-            margin-top: 123px;
+            margin-top: 101px;
         }
 
         button{
@@ -189,10 +213,10 @@ class League extends HTMLElement {
         const $container = document.createElement('div');
         $container.style.position = 'relative';
         $container.innerText = 'Inglaterra - Premier League';
-        $container.style.marginLeft = '5px'; 
-        $container.style.marginBottom = '20px'; 
-        $container.style.fontSize = '25px'; 
-        $container.style.fontWeight = '600'; 
+        $container.style.marginLeft = '5px';
+        $container.style.marginBottom = '20px';
+        $container.style.fontSize = '25px';
+        $container.style.fontWeight = '600';
         $container.style.color = '#06379d';
 
         const $container2 = document.createElement('div');
@@ -225,9 +249,30 @@ class League extends HTMLElement {
 
             const eventItems = this.$league.querySelectorAll('.event_data');
             eventItems.forEach(item => {
-                item.style.width = 'calc(20% - 20px);';
-                item.style.boxSizing = 'border-box';
+                item.style.width = 'calc(50% - 20px)';
+                item.style.minWidth = '350px';
+
+                
+                
+
+
                 item.style.flexGrow = 1;
+            });
+
+            const outcomeNames = this.$league.querySelectorAll('.outcome_name');
+            outcomeNames.forEach(item => {
+                item.style.marginLeft = '20%'; // Agregar margen izquierdo de 50px a las clases 'outcome_name'
+            });
+
+            const outcomeShirt = this.$league.querySelectorAll('.outcome_shirts');
+            outcomeShirt.forEach(item => {
+                item.style.marginLeft = '28%'; // Agregar margen izquierdo de 50px a las clases 'outcome_name'
+            });
+
+            const outcomeOdds = this.$league.querySelectorAll('.outcome_odds');
+            outcomeOdds.forEach(item => {
+                item.style.marginLeft = '20%'; // Agregar margen izquierdo de 50px a las clases 'outcome_name'
+                
             });
             this.stylesChanged = true;
         } else {
@@ -382,17 +427,28 @@ class League extends HTMLElement {
                     $outcome.className = this.getOutcomeDivName(outcome);
 
 
-                    const $outcomeName = document.createElement('div');
-                    $outcomeName.className = "outcome_name";
-                    $outcomeName.innerHTML = this.getOutcomeText(event, outcome);
 
-                    //Choosing Home or Away team
-
-                    const teamValue = $outcome.className === "home" ? "home" : "away";
 
                     //
-
+                    const $outcomeName = document.createElement('div');
+                    $outcomeName.className = "outcome_name";
+                    const teamValue = $outcome.className === "home" ? "home" : "away";
                     const teamName = event[`${teamValue}Name`]?.toLowerCase().replace(/\s/g, '-') || '';
+                    const outcomeText = this.getOutcomeText(event, outcome);
+
+                    const words = outcomeText.split(' ');
+                    const outcomeText2 = words.slice(-2).join(' ');
+
+                    if ($outcome.className !== "draw") {
+                        // Crear un elemento <br> para el salto de línea
+                        const $breakLine = document.createElement('br');
+                        // Añadir el nombre del equipo y el salto de línea al contenido de $outcomeName
+                        $outcomeName.innerHTML = `${teamName}<br>${outcomeText2}`;
+                    } else {
+                        $outcomeName.innerHTML = `${outcomeText}`;
+                    }
+
+
 
                     //Home or away shirt
 
