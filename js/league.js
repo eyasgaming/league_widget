@@ -193,7 +193,7 @@ class League extends HTMLElement {
         $container.style.marginBottom = '20px'; 
         $container.style.fontSize = '25px'; 
         $container.style.fontWeight = '600'; 
-        $container.style.color = '#06379d'; // Establece el color del texto a azul
+        $container.style.color = '#06379d';
 
         const $container2 = document.createElement('div');
         $container2.style.position = 'relative';
