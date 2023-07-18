@@ -359,7 +359,7 @@ class League extends HTMLElement {
             const hour = localDate.getHours();
             const min = localDate.getMinutes();
 
-            // Formateas la fecha y la hora en el formato "dd/mm/yyyy hh:mm"
+            // Format in "dd/mm/yyyy hh:mm"
             const date = `${day.toString().padStart(2, '0')}/${month.toString().padStart(2, '0')}/${year} ${hour.toString().padStart(2, '0')}:${min.toString().padStart(2, '0')}`;
 
 
