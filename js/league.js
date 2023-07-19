@@ -133,23 +133,31 @@ template.innerHTML = `
             margin-top: 101px;
         }
 
-        button{
-            padding: 12px 24px;
+        button {
+            
             margin-left: 5px;
-            font-size: 16px;
-            font-weight: bold;
-            color: #ffffff;
+            
             background-color: var(--blue);
-            border: none;
             border-radius: 6px;
             cursor: pointer;
             transition: background-color 0.5s ease-in-out;
-            border: 1px solid black;
+            border: 3px solid var(--blue);
         }
+        button img {
+            width: 40px;
+            height: 50px;
+            transition: 400ms;
+            
+        }
+        button img:hover {
+            transform: rotate(180deg);
+            
+        }
+
         button:hover{
-            background-color:#dce9fc;
-            color: black;
-            border: 1px solid black;
+            
+            
+           
         }
 
         
@@ -219,13 +227,29 @@ class League extends HTMLElement {
         $container.style.fontWeight = '600';
         $container.style.color = '#06379d';
 
+        const imageUrls = [
+            'icons/table.png',
+            'icons/slider.png',
+            // Add more image URLs as needed
+        ];
+
+        let currentImageIndex = 0;
+
         const $container2 = document.createElement('div');
         $container2.style.position = 'relative';
 
         // Add button to container
         const $button = document.createElement('button');
-        $button.innerText = 'Change view';
-        $button.addEventListener('click', this.changeStyles.bind(this));
+
+        const $img = document.createElement('img');
+        $img.src = imageUrls[currentImageIndex];
+        $button.appendChild($img);
+        $button.addEventListener('click', () => {
+            currentImageIndex = (currentImageIndex + 1) % imageUrls.length; // Update the image index
+            $img.src = imageUrls[currentImageIndex];
+            this.changeStyles();
+        });
+        
         $container2.appendChild($button);
 
         // Add #league to container
@@ -260,9 +284,9 @@ class League extends HTMLElement {
             const eventName = this.$league.querySelectorAll('.event_name');
             eventName.forEach(item => {
                 item.style.fontSize = isMobile ? '14px' : '18px';
-                item.style.whiteSpace = isMobile ? 'nowrap': 'normal';
+                item.style.whiteSpace = isMobile ? 'nowrap' : 'normal';
                 item.style.maxWidth = isMobile ? '150px' : '350px';
-                
+
             });
 
             const outcomeDate = this.$league.querySelectorAll('.event_date');
@@ -272,25 +296,25 @@ class League extends HTMLElement {
 
             const outcomeNames = this.$league.querySelectorAll('.outcome_name');
             outcomeNames.forEach(item => {
-                item.style.marginLeft = '16%'; 
+                item.style.marginLeft = '16%';
                 item.style.textOverflow = 'ellipsis';
-                item.style.whiteSpace = isMobile ? 'nowrap': 'normal';
+                item.style.whiteSpace = isMobile ? 'nowrap' : 'normal';
                 item.style.maxWidth = '150px';
             });
 
             const outcomeShirt = this.$league.querySelectorAll('.outcome_shirts');
             outcomeShirt.forEach(item => {
-                item.style.marginLeft = isMobile ? '36%': '33%'; 
-                item.style.marginLeft = isMobile2 ? '28%': '33%'; 
-                item.style.marginLeft = isMobile3 ? '20%': '29%'; 
+                item.style.marginLeft = isMobile ? '36%' : '33%';
+                item.style.marginLeft = isMobile2 ? '28%' : '33%';
+                item.style.marginLeft = isMobile3 ? '20%' : '29%';
             });
 
-            
+
 
             const outcomeOdds = this.$league.querySelectorAll('.outcome_odds');
             outcomeOdds.forEach(item => {
                 item.style.marginLeft = '21%';
-                
+
 
 
             });
@@ -298,46 +322,46 @@ class League extends HTMLElement {
         } else {
             this.$league.style.display = '';
             this.$league.style.flexWrap = '';
-          
+
             const eventItems = this.$league.querySelectorAll('.event_data');
             eventItems.forEach(item => {
-              item.style.width = '';
-              item.style.minWidth = '';
-              item.style.flexGrow = '';
+                item.style.width = '';
+                item.style.minWidth = '';
+                item.style.flexGrow = '';
             });
-          
+
             const eventName = this.$league.querySelectorAll('.event_name');
             eventName.forEach(item => {
-              item.style.fontSize = '';
-              item.style.whiteSpace = '';
-              item.style.maxWidth = '';
+                item.style.fontSize = '';
+                item.style.whiteSpace = '';
+                item.style.maxWidth = '';
             });
-          
+
             const outcomeDate = this.$league.querySelectorAll('.event_date');
             outcomeDate.forEach(item => {
-              item.style.fontSize = '';
+                item.style.fontSize = '';
             });
-          
+
             const outcomeNames = this.$league.querySelectorAll('.outcome_name');
             outcomeNames.forEach(item => {
-              item.style.marginLeft = '';
-              item.style.textOverflow = '';
-              item.style.whiteSpace = '';
-              item.style.maxWidth = '';
+                item.style.marginLeft = '';
+                item.style.textOverflow = '';
+                item.style.whiteSpace = '';
+                item.style.maxWidth = '';
             });
-          
+
             const outcomeShirt = this.$league.querySelectorAll('.outcome_shirts');
             outcomeShirt.forEach(item => {
-              item.style.marginLeft = '';
+                item.style.marginLeft = '';
             });
-          
+
             const outcomeOdds = this.$league.querySelectorAll('.outcome_odds');
             outcomeOdds.forEach(item => {
-              item.style.marginLeft = '';
+                item.style.marginLeft = '';
             });
-          
+
             this.stylesChanged = false;
-          }
+        }
     }
 
 
