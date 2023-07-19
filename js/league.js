@@ -189,7 +189,12 @@ class League extends HTMLElement {
         this.url = this.prod ? this.prodUrl : this.nonProdUrl;
         this.target = this.prod ? this.prodTarget : this.nonProdTarget;
 
-        this.stylesChanged = false; //to control de styles
+        this.layout = this.getAttribute('layout');
+
+        this.isVerticalLayout = this.layout === 'vertical';
+
+        this.stylesChanged = true; //to control de styles
+
 
         //  this.leagueId = this.getAttribute('leagueId');
     }
@@ -239,18 +244,20 @@ class League extends HTMLElement {
         $container2.style.position = 'relative';
 
         // Add button to container
-        const $button = document.createElement('button');
+        if (this.isVerticalLayout) {
+            const $button = document.createElement('button');
 
-        const $img = document.createElement('img');
-        $img.src = imageUrls[currentImageIndex];
-        $button.appendChild($img);
-        $button.addEventListener('click', () => {
-            currentImageIndex = (currentImageIndex + 1) % imageUrls.length; // Update the image index
+            const $img = document.createElement('img');
             $img.src = imageUrls[currentImageIndex];
-            this.changeStyles();
-        });
-        
-        $container2.appendChild($button);
+            $button.appendChild($img);
+            $button.addEventListener('click', () => {
+                currentImageIndex = (currentImageIndex + 1) % imageUrls.length;
+                $img.src = imageUrls[currentImageIndex];
+                this.changeStyles();
+            });
+
+            $container2.appendChild($button);
+        }
 
         // Add #league to container
         this.$league = this._shadowRoot.querySelector('#league');
