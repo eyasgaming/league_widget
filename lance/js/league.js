@@ -245,14 +245,15 @@ class League extends HTMLElement {
             this.$league.style.flexWrap = 'wrap';
 
             const windowWidth = window.innerWidth;
-            const isMobile = windowWidth <= 768;
-            const isMobile2 = windowWidth >= 900;
+            const isMobile = windowWidth <= "768px";
+            const isMobile2 = windowWidth >= "900px";
+            const isMobile3 = windowWidth <= "1000px";
 
 
             const eventItems = this.$league.querySelectorAll('.event_data');
             eventItems.forEach(item => {
                 item.style.width = 'calc(50% - 20px)';
-                item.style.minWidth = '350px';
+                item.style.minWidth = '470px';
                 item.style.flexGrow = 1;
             });
 
@@ -281,13 +282,16 @@ class League extends HTMLElement {
             outcomeShirt.forEach(item => {
                 item.style.marginLeft = isMobile ? '36%': '33%'; 
                 item.style.marginLeft = isMobile2 ? '28%': '33%'; 
+                item.style.marginLeft = isMobile3 ? '20%': '29%'; 
             });
 
             
 
             const outcomeOdds = this.$league.querySelectorAll('.outcome_odds');
             outcomeOdds.forEach(item => {
-                item.style.marginLeft = '22%'; 
+                item.style.marginLeft = '21%';
+                
+
 
             });
             this.stylesChanged = true;
