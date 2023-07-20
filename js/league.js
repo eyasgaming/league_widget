@@ -8,160 +8,161 @@ const template = document.createElement('template');
 
 template.innerHTML = `
     <style>
-        :root {
-            --green: #00b925; 
-            --blue: #06379d;
-            
-        }
-        #league {
-            display:flex;
-            overflow-x: auto; 
-            
-        }
-
-        
-
-        .event_data {
-            
-            
-            margin: 5px;
-            padding: 5px;
-            border-radius: 12px;
-            background: #ffffff;
-            color: #000000;
-            min-width: 367px;
-            height: 263px;
-            box-shadow: 3px 2px 4px rgba(0, 0, 0, 0.2);
-            color: var(--blue);
-            position: relative;
-            
-            
-            
-        }
+    :root {
+        --green: #00b925;
+        --blue: #06379d;
+      }
+      
+      #league {
+        display: flex;
+        flex-wrap: wrap;
+      }
+      
+      .event_data {
+        width: calc(50% - 20px);
+        min-width: 532px;
+        flex-grow: 1;
+        flex-direction: column;
+        margin: 5px;
+        padding: 5px;
+        border-radius: 12px;
+        background: #ffffff;
+        color: #000000;
+        height: 263px;
+        box-shadow: 3px 2px 4px rgba(0, 0, 0, 0.2);
+        color: var(--blue);
+        position: relative;
+      }
+      
+      .event_name {
+        font-weight: 800;
+        margin: 15px 15px;
+        display: inline-block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-size: 18px;
+        white-space: normal;
+        max-width: 350px;
+      }
+      
+      .event_date {
+        margin: 20px 15px 10px;
+        display: block;
+        font-size: 16px;
+        position: absolute;
+        top: 0;
+        right: 0;
+      }
+      
+      .bet_offers {
+        display: grid;
+        grid-auto-rows: 1fr;
+        grid-template-columns: 1fr 1fr 1fr;
+        text-transform: uppercase;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        margin-bottom: 20px;
+        font-weight: 550;
+        font-size: 12px;
+      }
+      
+      a {
+        background-color: #e9e9e9;
+        text-decoration: none;
+        width: 60px;
+        color: var(--blue);
+        font-size: bold;
+        display: block;
+        padding: 18px;
+        border-radius: 6px;
+        text-align: center;
+        margin: 10px 10px;
+        font-weight: 900;
+        transition: 300ms;
+        box-shadow: 3px 2px 4px rgba(0, 0, 0, 0.2);
+      }
+      
+      a:hover {
+        background-color: #dce9fc;
+      }
+      
+      .outcome_name {
+        margin: 15px 0px;
+        text-align: center;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-weight: 800;
+        margin-left: 16%;
+        text-overflow: ellipsis;
+        white-space: normal;
+        max-width: 150px;
+      }
+      
+      .outcome_odds {
+        margin-left: 21%;
+      }
+      
+      .outcome_shirts {
+        margin-left: 33%;
+      }
+      
+      img {
+        width: 76px;
+        height: 84px;
+      }
+      
+      .draw {
+        margin-top: 101px;
+      }
+      
+      button {
+        margin-left: 5px;
+        background-color: var(--blue);
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background-color 0.5s ease-in-out;
+        border: 3px solid var(--blue);
+      }
+      
+      button img {
+        width: 40px;
+        height: 50px;
+        transition: 400ms;
+      }
+      
+      button img:hover {
+        transform: rotate(180deg);
+      }
+      
+      @media screen and (max-width: 768px) {
         .event_name {
-            font-weight: 800;
-            font-size: 14px;
-            margin: 15px 15px;
-            max-width: 200px; 
-            display: inline-block;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-
-            
+          font-size: 14px;
+          white-space: nowrap;
+          max-width: 150px;
         }
+      
         .event_date {
-            margin: 20px 15px 10px;
-            display: block;
-            font-size: 13px;
-            position: absolute;
-            top: 0;
-            right: 0;
-            
-            
-         }
-
-        .bet_offers {
-            display: grid;
-            grid-auto-rows: 1fr;
-            grid-template-columns: 1fr 1fr 1fr;
-            text-transform: uppercase  ;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            
-            margin-bottom: 20px;
-            font-weight: 550;
-            font-size: 12px;
-            
-            
+          font-size: 13px;
         }
-        a { 
-            background-color: #e9e9e9;
-            text-decoration: none;
-            width: 60px; 
-            color: var(--blue);
-            font-size: bold;
-            display:block;
-            padding: 18px;
-            border-radius: 6px;
-            text-align: center;
-            margin: 0 10px;
-            font-weight: 900;
-            transition: 300ms;
-            box-shadow: 3px 2px 4px rgba(0, 0, 0, 0.2);
-            
+      
+        .outcome_shirts {
+          margin-left: 36%;
         }
-
-        a:hover {
-            background-color: #dce9fc;
-            
+      }
+      
+      @media screen and (min-width: 768px) and (max-width: 900px) {
+        .outcome_shirts {
+          margin-left: 28%;
         }
-        
-
-        .outcome_name {
-            
-            margin: 15px 0px;
-            max-width: 120px; 
-            text-align: center;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            font-weight: 800;
-            
+      }
+      
+      @media screen and (min-width: 900px) {
+        .outcome_shirts {
+          margin-left: 29%;
         }
-
-        .outcome_odds{
-            margin-bottom:15px
-            
-
-        }
-
-        .outcome_shirts{
-            margin-left:19%;
-            
-
-        }
-
-        
-
-        img {
-            width: 76px;
-            height: 84px;
-        }
-
-        .draw{
-            margin-top: 101px;
-        }
-
-        button {
-            
-            margin-left: 5px;
-            
-            background-color: var(--blue);
-            border-radius: 6px;
-            cursor: pointer;
-            transition: background-color 0.5s ease-in-out;
-            border: 3px solid var(--blue);
-        }
-        button img {
-            width: 40px;
-            height: 50px;
-            transition: 400ms;
-            
-        }
-        button img:hover {
-            transform: rotate(180deg);
-            
-        }
-
-        button:hover{
-            
-            
-           
-        }
-
-        
-
+      }
     </style>
     <div id ="league" >
     
@@ -191,7 +192,7 @@ class League extends HTMLElement {
 
         this.layout = this.getAttribute('layout');
 
-        this.isVerticalLayout = this.layout === 'vertical';
+        this.isHorizontalLayout = this.layout === 'horizontal';
 
         this.stylesChanged = true; //to control de styles
 
@@ -244,7 +245,7 @@ class League extends HTMLElement {
         $container2.style.position = 'relative';
 
         // Add button to container
-        if (this.isVerticalLayout) {
+        if (!this.isHorizontalLayout) {
             const $button = document.createElement('button');
 
             const $img = document.createElement('img');
@@ -257,7 +258,11 @@ class League extends HTMLElement {
             });
 
             $container2.appendChild($button);
+
         }
+        this.changeStyles();
+
+
 
         // Add #league to container
         this.$league = this._shadowRoot.querySelector('#league');
@@ -272,59 +277,47 @@ class League extends HTMLElement {
     changeStyles() {
 
         if (!this.stylesChanged) {
+            console.log("cambiando estilos")
             this.$league.style.display = 'flex';
-            this.$league.style.flexWrap = 'wrap';
+            this.$league.style.flexWrap = 'nowrap';
+            this.$league.style.overflowX= 'auto';
 
-            const windowWidth = window.innerWidth;
-            const isMobile = windowWidth <= "768px";
-            const isMobile2 = windowWidth >= "900px";
-            const isMobile3 = windowWidth <= "1000px";
+            
 
 
             const eventItems = this.$league.querySelectorAll('.event_data');
             eventItems.forEach(item => {
-                item.style.width = 'calc(50% - 20px)';
-                item.style.minWidth = '470px';
-                item.style.flexGrow = 1;
+                console.log("cambiando estilwdwdos")
             });
 
             const eventName = this.$league.querySelectorAll('.event_name');
             eventName.forEach(item => {
-                item.style.fontSize = isMobile ? '14px' : '18px';
-                item.style.whiteSpace = isMobile ? 'nowrap' : 'normal';
-                item.style.maxWidth = isMobile ? '150px' : '350px';
-
+                
+                
             });
 
             const outcomeDate = this.$league.querySelectorAll('.event_date');
             outcomeDate.forEach(item => {
-                item.style.fontSize = isMobile ? '13px' : '16px';
+                
             });
 
             const outcomeNames = this.$league.querySelectorAll('.outcome_name');
             outcomeNames.forEach(item => {
-                item.style.marginLeft = '16%';
-                item.style.textOverflow = 'ellipsis';
-                item.style.whiteSpace = isMobile ? 'nowrap' : 'normal';
-                item.style.maxWidth = '150px';
+                item.style.marginLeft = '1%';
             });
 
             const outcomeShirt = this.$league.querySelectorAll('.outcome_shirts');
             outcomeShirt.forEach(item => {
-                item.style.marginLeft = isMobile ? '36%' : '33%';
-                item.style.marginLeft = isMobile2 ? '28%' : '33%';
-                item.style.marginLeft = isMobile3 ? '20%' : '29%';
+                item.style.marginLeft = '25%';
             });
 
 
 
             const outcomeOdds = this.$league.querySelectorAll('.outcome_odds');
             outcomeOdds.forEach(item => {
-                item.style.marginLeft = '21%';
-
-
-
+                item.style.marginLeft = '10%';
             });
+
             this.stylesChanged = true;
         } else {
             this.$league.style.display = '';
