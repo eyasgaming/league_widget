@@ -27,10 +27,10 @@ template.innerHTML = `
         padding: 5px;
         border-radius: 12px;
         background: #ffffff;
-        color: #000000;
+        
         height: 263px;
         box-shadow: 3px 2px 4px rgba(0, 0, 0, 0.2);
-        color: var(--blue);
+        color: #06379d;
         position: relative;
       }
       
