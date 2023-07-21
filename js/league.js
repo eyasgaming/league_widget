@@ -8,27 +8,164 @@ const template = document.createElement('template');
 
 template.innerHTML = `
     <style>
-        .event_data {
-            border: 1px solid #ccc;
-            margin: 5px;
-            padding: 5px;
-            border-radius: 5px;
-        }
+    :root {
+        --green: #00b925;
+        --blue: #06379d;
+      }
+      
+      #league {
+        display: flex;
+        flex-wrap: wrap;
+      }
+      
+      .event_data {
+        width: calc(50% - 20px);
+        min-width: 532px;
+        flex-grow: 1;
+        flex-direction: column;
+        margin: 5px;
+        padding: 5px;
+        border-radius: 12px;
+        background: #ffffff;
+        
+        height: 263px;
+        box-shadow: 3px 2px 4px rgba(0, 0, 0, 0.2);
+        color: #06379d;
+        position: relative;
+      }
+      
+      .event_name {
+        font-weight: 800;
+        margin: 15px 15px;
+        display: inline-block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-size: 18px;
+        white-space: normal;
+        max-width: 350px;
+      }
+      
+      .event_date {
+        margin: 20px 15px 10px;
+        display: block;
+        font-size: 16px;
+        position: absolute;
+        top: 0;
+        right: 0;
+      }
+      
+      .bet_offers {
+        display: grid;
+        grid-auto-rows: 1fr;
+        grid-template-columns: 1fr 1fr 1fr;
+        text-transform: uppercase;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        margin-bottom: 20px;
+        font-weight: 550;
+        font-size: 12px;
+      }
+      
+      a {
+        background-color: #e9e9e9;
+        text-decoration: none;
+        width: 60px;
+        color: var(--blue);
+        font-size: bold;
+        display: block;
+        padding: 18px;
+        border-radius: 6px;
+        text-align: center;
+        margin: 10px 10px;
+        font-weight: 900;
+        transition: 300ms;
+        box-shadow: 3px 2px 4px rgba(0, 0, 0, 0.2);
+      }
+      
+      a:hover {
+        background-color: #dce9fc;
+      }
+      
+      .outcome_name {
+        margin: 15px 0px;
+        text-align: center;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-weight: 800;
+        margin-left: 16%;
+        text-overflow: ellipsis;
+        white-space: normal;
+        max-width: 150px;
+      }
+      
+      .outcome_odds {
+        margin-left: 21%;
+      }
+      
+      .outcome_shirts {
+        margin-left: 33%;
+      }
+      
+      img {
+        width: 76px;
+        height: 84px;
+      }
+      
+      .draw {
+        margin-top: 101px;
+      }
+      
+      button {
+        margin-left: 5px;
+        background-color: var(--blue);
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background-color 0.5s ease-in-out;
+        border: 3px solid var(--blue);
+      }
+      
+      button img {
+        width: 40px;
+        height: 50px;
+        transition: 400ms;
+      }
+      
+      button img:hover {
+        transform: rotate(180deg);
+      }
+      
+      @media screen and (max-width: 768px) {
         .event_name {
-            font-weight: bold;
-            font-size: 1.2em;
+          font-size: 14px;
+          white-space: nowrap;
+          max-width: 150px;
         }
+      
         .event_date {
-             padding-left: 10px;
-         }
-
-        .bet_offers {
-            display: grid;
-            grid-auto-rows: 1fr;
-            grid-template-columns: 1fr 1fr 1fr;
+          font-size: 13px;
         }
+      
+        .outcome_shirts {
+          margin-left: 36%;
+        }
+      }
+      
+      @media screen and (min-width: 768px) and (max-width: 900px) {
+        .outcome_shirts {
+          margin-left: 28%;
+        }
+      }
+      
+      @media screen and (min-width: 900px) {
+        .outcome_shirts {
+          margin-left: 29%;
+        }
+      }
     </style>
-    <div id ="league">
+    <div id ="league" >
+    
     </div>
   `
 
@@ -53,7 +190,14 @@ class League extends HTMLElement {
         this.url = this.prod ? this.prodUrl : this.nonProdUrl;
         this.target = this.prod ? this.prodTarget : this.nonProdTarget;
 
-      //  this.leagueId = this.getAttribute('leagueId');
+        this.layout = this.getAttribute('layout');
+
+        this.isHorizontalLayout = this.layout === 'horizontal';
+
+        this.stylesChanged = true; //to control de styles
+
+
+        //  this.leagueId = this.getAttribute('leagueId');
     }
 
 
@@ -77,9 +221,151 @@ class League extends HTMLElement {
     connectedCallback() {
         this.$league = this._shadowRoot.querySelector('#league');
         this.$league.innerHTML = this.loadingText;
-     //   this.$odds.href = this.target + "?affiliateId=" + this.affiliateId // default url in case no odds found.
+        //   this.$odds.href = this.target + "?affiliateId=" + this.affiliateId // default url in case no odds found.
         this.getEvents(this.leagueId);
+
+        const $container = document.createElement('div');
+        $container.style.position = 'relative';
+        $container.innerText = 'Inglaterra - Premier League';
+        $container.style.marginLeft = '5px';
+        $container.style.marginBottom = '20px';
+        $container.style.fontSize = '25px';
+        $container.style.fontWeight = '600';
+        $container.style.color = '#06379d';
+
+        const imageUrls = [
+            'icons/table.png',
+            'icons/slider.png',
+            // Add more image URLs as needed
+        ];
+
+        let currentImageIndex = 0;
+
+        const $container2 = document.createElement('div');
+        $container2.style.position = 'relative';
+
+        // Add button to container
+        if (!this.isHorizontalLayout) {
+            const $button = document.createElement('button');
+
+            const $img = document.createElement('img');
+            $img.src = imageUrls[currentImageIndex];
+            $button.appendChild($img);
+            $button.addEventListener('click', () => {
+                currentImageIndex = (currentImageIndex + 1) % imageUrls.length;
+                $img.src = imageUrls[currentImageIndex];
+                this.changeStyles();
+            });
+
+            $container2.appendChild($button);
+
+        }
+        this.changeStyles();
+
+
+
+        // Add #league to container
+        this.$league = this._shadowRoot.querySelector('#league');
+        $container2.appendChild(this.$league);
+
+        // Add to container to shadow DOM
+        this._shadowRoot.appendChild($container);
+        this._shadowRoot.appendChild($container2);
+
     }
+
+    changeStyles() {
+
+        if (!this.stylesChanged) {
+            console.log("cambiando estilos")
+            this.$league.style.display = 'flex';
+            this.$league.style.flexWrap = 'nowrap';
+            this.$league.style.overflowX= 'auto';
+
+            
+
+
+            const eventItems = this.$league.querySelectorAll('.event_data');
+            eventItems.forEach(item => {
+                console.log("cambiando estilwdwdos")
+            });
+
+            const eventName = this.$league.querySelectorAll('.event_name');
+            eventName.forEach(item => {
+                
+                
+            });
+
+            const outcomeDate = this.$league.querySelectorAll('.event_date');
+            outcomeDate.forEach(item => {
+                
+            });
+
+            const outcomeNames = this.$league.querySelectorAll('.outcome_name');
+            outcomeNames.forEach(item => {
+                item.style.marginLeft = '1%';
+            });
+
+            const outcomeShirt = this.$league.querySelectorAll('.outcome_shirts');
+            outcomeShirt.forEach(item => {
+                item.style.marginLeft = '25%';
+            });
+
+
+
+            const outcomeOdds = this.$league.querySelectorAll('.outcome_odds');
+            outcomeOdds.forEach(item => {
+                item.style.marginLeft = '10%';
+            });
+
+            this.stylesChanged = true;
+        } else {
+            this.$league.style.display = '';
+            this.$league.style.flexWrap = '';
+
+            const eventItems = this.$league.querySelectorAll('.event_data');
+            eventItems.forEach(item => {
+                item.style.width = '';
+                item.style.minWidth = '';
+                item.style.flexGrow = '';
+            });
+
+            const eventName = this.$league.querySelectorAll('.event_name');
+            eventName.forEach(item => {
+                item.style.fontSize = '';
+                item.style.whiteSpace = '';
+                item.style.maxWidth = '';
+            });
+
+            const outcomeDate = this.$league.querySelectorAll('.event_date');
+            outcomeDate.forEach(item => {
+                item.style.fontSize = '';
+            });
+
+            const outcomeNames = this.$league.querySelectorAll('.outcome_name');
+            outcomeNames.forEach(item => {
+                item.style.marginLeft = '';
+                item.style.textOverflow = '';
+                item.style.whiteSpace = '';
+                item.style.maxWidth = '';
+            });
+
+            const outcomeShirt = this.$league.querySelectorAll('.outcome_shirts');
+            outcomeShirt.forEach(item => {
+                item.style.marginLeft = '';
+            });
+
+            const outcomeOdds = this.$league.querySelectorAll('.outcome_odds');
+            outcomeOdds.forEach(item => {
+                item.style.marginLeft = '';
+            });
+
+            this.stylesChanged = false;
+        }
+    }
+
+
+
 
     getEvents(leagueId) {
         const data = JSON.stringify({
@@ -146,6 +432,8 @@ class League extends HTMLElement {
             }`
         });
 
+
+
         const response = fetch(
             this.url,
             {
@@ -159,8 +447,8 @@ class League extends HTMLElement {
                 },
             }
         ).then((response) => response.json())
-         .then((data) => this.renderLeage(data.data.event.events))
-         .catch((error) => this.$league.innerHTML = this.textContent);
+            .then((data) => this.renderLeage(data.data.event.events))
+            .catch((error) => this.$league.innerHTML = this.textContent);
     }
 
     renderLeage(events) {
@@ -183,10 +471,22 @@ class League extends HTMLElement {
 
 
             var localDate = new Date(event.start);
+            const day = localDate.getDate();
+            const month = localDate.getMonth() + 1;
+            const year = localDate.getFullYear();
+            const hour = localDate.getHours();
+            const min = localDate.getMinutes();
+
+            // Format in "dd/mm/yyyy hh:mm"
+            const date = `${day.toString().padStart(2, '0')}/${month.toString().padStart(2, '0')}/${year} ${hour.toString().padStart(2, '0')}:${min.toString().padStart(2, '0')}`;
+
+
             const $eventDate = document.createElement('span');
-            $eventDate.innerHTML = localDate.toLocaleString();
+            $eventDate.innerHTML = date.toLocaleString();
             $eventDate.className = "event_date";
             $event.appendChild($eventDate);
+
+
 
             event.betOffers.forEach((betOffer) => {
 
@@ -195,12 +495,60 @@ class League extends HTMLElement {
                 $betOffer.className = "bet_offers";
 
                 betOffer.outcomes.forEach((outcome) => {
+
                     const $outcome = document.createElement('div');
                     $outcome.className = this.getOutcomeDivName(outcome);
 
+
+
+
+                    //
                     const $outcomeName = document.createElement('div');
                     $outcomeName.className = "outcome_name";
-                    $outcomeName.innerHTML = this.getOutcomeText(event, outcome);
+                    const teamValue = $outcome.className === "home" ? "home" : "away";
+                    const teamName = event[`${teamValue}Name`]?.toLowerCase().replace(/\s/g, '-') || '';
+                    const outcomeText = this.getOutcomeText(event, outcome);
+
+                    const words = outcomeText.split(' ');
+                    const outcomeText2 = words.slice(-2).join(' ');
+
+                    if ($outcome.className !== "draw") {
+                        // Crear un elemento <br> para el salto de línea
+                        const $breakLine = document.createElement('br');
+                        // Añadir el nombre del equipo y el salto de línea al contenido de $outcomeName
+                        $outcomeName.innerHTML = `${teamName}<br>${outcomeText2}`;
+                    } else {
+                        $outcomeName.innerHTML = `${outcomeText}`;
+                    }
+
+
+
+                    //Home or away shirt
+
+                    const imageUrlFinal = `https://lancebet-com-prod.eyasgaming.net/content/dam/eyas-web/images/team-colours/football/england/${teamName}-${teamValue}.png`
+
+                    const imageUrlFinalAux = `https://lancebet-com-prod.eyasgaming.net/content/dam/eyas-web/images/team-colours/football/generic-${teamValue}.png`;
+
+
+
+                    //shirts on the screen
+
+
+                    if ($outcome.className !== "draw") {
+                        const $greetingDiv = document.createElement('div');
+                        $greetingDiv.className = "outcome_shirts";
+                        const $teamImage = document.createElement('img');
+                        $teamImage.src = imageUrlFinal;
+                        $teamImage.onerror = () => {
+                            // If an error exist use URL alternative
+                            $teamImage.src = imageUrlFinalAux;
+                        };
+                        $greetingDiv.appendChild($teamImage);
+                        $outcome.appendChild($greetingDiv);
+
+                    }
+
+
                     const $outcomeOdds = document.createElement('div');
                     $outcomeOdds.className = "outcome_odds";
 
@@ -209,8 +557,12 @@ class League extends HTMLElement {
                     $outcomeLink.innerText = (Number(outcome.odds) / 1000).toFixed(2).toLocaleString();
                     $outcomeLink.target = "lancebet";
 
+
+
+
                     $outcomeOdds.appendChild($outcomeLink);
                     $outcome.appendChild($outcomeName);
+
                     $outcome.appendChild($outcomeOdds);
                     $betOffer.appendChild($outcome);
                 });
@@ -256,5 +608,11 @@ class League extends HTMLElement {
 
 
 }
+
+
+
+
+
+
 
 window.customElements.define('league-events', League);

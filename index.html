@@ -3,21 +3,37 @@
 
 <head>
     <meta charset="UTF-8">
+
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    
+    <title>Odds by LanceBETTING!</title>
+    
+
     <style>
-        body {
-            font-family: 'Roboto', sans-serif;
+        body{
+            font-family: "Roboto", sans-serif;
         }
     </style>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
 </head>
 
 <body>
-    <h1>Premier League</h1>
-    <league-events leagueId="1000094985" loadingText="Loading..." drawText="draw" winText="to win">No Matches currently avaliable</league-events>
+    
+    
+    
+
+    <!-- Set layout="vertical" to see a button you can use to change the view of the matches, set whatever word and it wil be a scroll again-->
+    <league-events leagueId="1000094985" loadingText="Loading..." drawText="draw" winText="to win" layout="horizontal">No Matches currently 
+        avaliable</league-events>
     <script src="./js/league.js"></script>
+    
+
+   
+
+
 </body>
 
 </html>
