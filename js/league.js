@@ -19,24 +19,23 @@ template.innerHTML = `
       }
       
       .event_data {
-        width: calc(50% - 20px);
-        min-width: 532px;
+        width: calc(30% - 20px);
+        min-width: 432px;
         flex-grow: 1;
         flex-direction: column;
         margin: 5px;
         padding: 5px;
-        border-radius: 12px;
+        border-radius: 28px;
         background: #ffffff;
         
-        height: 263px;
+        height: 315px;
         box-shadow: 3px 2px 4px rgba(0, 0, 0, 0.2);
-        color: #06379d;
+        color: black;
         position: relative;
       }
       
       .event_name {
-        font-weight: 800;
-        margin: 15px 15px;
+        margin: 5px 15px 15px 15px;
         display: inline-block;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -47,7 +46,7 @@ template.innerHTML = `
       }
       
       .event_date {
-        margin: 20px 15px 10px;
+        margin: 20px 40px 10px;
         display: block;
         font-size: 16px;
         position: absolute;
@@ -62,59 +61,57 @@ template.innerHTML = `
         text-transform: uppercase;
         overflow: hidden;
         text-overflow: ellipsis;
-        margin-bottom: 20px;
-        font-weight: 550;
+        margin-top: 30px !important;
         font-size: 12px;
+        margin-right: 10px;
       }
       
       a {
         background-color: #e9e9e9;
         text-decoration: none;
-        width: 60px;
+        width: 94px;
         color: var(--blue);
-        font-size: bold;
+        font-size: 19px;
         display: block;
-        padding: 18px;
-        border-radius: 6px;
+        padding: 14px 15px;
+        border-radius: 4px;
         text-align: center;
-        margin: 10px 10px;
-        font-weight: 900;
+        margin: 19px -15px 20px -5px;
         transition: 300ms;
         box-shadow: 3px 2px 4px rgba(0, 0, 0, 0.2);
       }
       
       a:hover {
-        background-color: #dce9fc;
+        background-color: #faf7b6;
       }
       
       .outcome_name {
-        margin: 15px 0px;
+        margin: 10px 8px 5px 8px;
         text-align: center;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
-        font-weight: 800;
-        margin-left: 16%;
+        margin-left: 12%;
         text-overflow: ellipsis;
         white-space: normal;
         max-width: 150px;
       }
       
       .outcome_odds {
-        margin-left: 21%;
+        margin-left: 11%;
       }
       
       .outcome_shirts {
-        margin-left: 33%;
+        margin-left: 25%;
       }
       
       img {
-        width: 76px;
-        height: 84px;
+        width: 82px;
+        height: 94px;
       }
       
       .draw {
-        margin-top: 101px;
+        margin-top: 98px;
       }
       
       button {
@@ -135,34 +132,51 @@ template.innerHTML = `
       button img:hover {
         transform: rotate(180deg);
       }
+
+      .event_test {
+        background-color: black;
+        border-radius: 28px 28px 0 0;
+        color: yellow;
+        width: calc(100% + 10px);
+        margin-left: -5px;
+        margin-top: -5px;
+    }
+    
+       .event_test img {
+        width: 80px; /* Make the image fill the entire div */
+        height: 30px; /* Make the image fill the entire div */
+        padding: 12px 5px 6px 5px; /* Optional: just make the image look better */
+        margin-left: 20px;
+    }
       
-      @media screen and (max-width: 768px) {
-        .event_name {
-          font-size: 14px;
-          white-space: nowrap;
-          max-width: 150px;
+      
+      
+      @media screen and (min-width: 550px) and (max-width: 931px) {
+        .bet_offers {
+            margin-left: 10%;
         }
-      
-        .event_date {
-          font-size: 13px;
-        }
-      
         .outcome_shirts {
-          margin-left: 36%;
+          margin-left: 19%;
+        }
+        .outcome_name {
+            margin-left: 6%;
         }
       }
       
-      @media screen and (min-width: 768px) and (max-width: 900px) {
-        .outcome_shirts {
-          margin-left: 28%;
+      @media screen and (min-width: 1050px) and (max-width: 1371px) {
+        
+        .outcome_name {
+            margin-left: 5%;
         }
-      }
-      
-      @media screen and (min-width: 900px) {
         .outcome_shirts {
-          margin-left: 29%;
+            margin-left: 23%;
         }
-      }
+        .bet_offers {
+            margin-left: 4%;
+        }
+    }
+
+
     </style>
     <div id ="league" >
     
@@ -454,30 +468,35 @@ class League extends HTMLElement {
         this.$league.innerHTML = "";
 
         events.forEach((event) => {
+            const imageLance = `https://theme.zdassets.com/theme_assets/11560444/d924dd3464cd1b98b303e3fa883cbbbd9aa9a4cd.svg`
+
             const $event = document.createElement('div');
             $event.className = "event_data";
 
-            const $eventTitle = document.createElement('span');
-            $eventTitle.innerHTML = event.name;
-            $eventTitle.className = "event_name";
-            $event.appendChild($eventTitle);
+            const $eventTest = document.createElement('div');
+            $eventTest.className = "event_test";
+            $event.appendChild($eventTest);
+
+            const $eventLogo = document.createElement('img');
+            $eventLogo.src = imageLance;
+            $eventLogo.className = "event_logo";
+            $eventTest.appendChild($eventLogo);
 
 
             var localDate = new Date(event.start);
-            const day = localDate.getDate();
-            const month = localDate.getMonth() + 1;
-            const year = localDate.getFullYear();
-            const hour = localDate.getHours();
-            const min = localDate.getMinutes();
 
-            // Format in "dd/mm/yyyy hh:mm"
-            const date = `${day.toString().padStart(2, '0')}/${month.toString().padStart(2, '0')}/${year} ${hour.toString().padStart(2, '0')}:${min.toString().padStart(2, '0')}`;
+            // Obtener el día y el mes en formato "dd/mm"
+            const day = localDate.getDate().toString().padStart(2, '0');
+            const month = (localDate.getMonth() + 1).toString().padStart(2, '0');
 
+            // Crear una cadena en formato "dd/mm"
+            const formattedDate = `${day}/${month}`;
 
-            const $eventDate = document.createElement('span');
-            $eventDate.innerHTML = date.toLocaleString();
+            // Crear un elemento div para la fecha formateada
+            const $eventDate = document.createElement('div');
+            $eventDate.innerHTML = formattedDate;
             $eventDate.className = "event_date";
-            $event.appendChild($eventDate);
+            $eventTest.appendChild($eventDate);
 
 
 
@@ -492,30 +511,25 @@ class League extends HTMLElement {
                 $betOffer.className = "bet_offers";
 
                 betOffer.outcomes.forEach((outcome) => {
-
                     const $outcome = document.createElement('div');
                     $outcome.className = this.getOutcomeDivName(outcome);
-
-
-
-
-                    //
+                  
                     const $outcomeName = document.createElement('div');
                     $outcomeName.className = "outcome_name";
                     const teamValue = $outcome.className === "home" ? "home" : "away";
                     const teamName = event[`${teamValue}Name`]?.toLowerCase().replace(/\s/g, '-') || '';
                     const outcomeText = this.getOutcomeText(event, outcome);
-                    const words = outcomeText.split(' ');
-                    const outcomeText2 = words.slice(-2).join(' ');
-
+                    const teamPrinted = event[`${teamValue}Name`]?.toLowerCase().replace(/\s/g, '-').replace(/-\w{2}$/, '');
+                  
+                    // Truncar el nombre a 10 caracteres y agregar puntos suspensivos si es más largo
+                    const truncatedName = teamPrinted.length > 15 ? teamPrinted.substring(0, 15) + '...' : teamPrinted;
+                  
                     if ($outcome.className !== "draw") {
-                        // Crear un elemento <br> para el salto de línea
-                        const $breakLine = document.createElement('br');
-                        // Añadir el nombre del equipo y el salto de línea al contenido de $outcomeName
-                        $outcomeName.innerHTML = `${teamName}<br>${outcomeText2}`;
+                      $outcomeName.innerHTML = truncatedName;
                     } else {
-                        $outcomeName.innerHTML = `${outcomeText}`;
+                      $outcomeName.innerHTML = outcomeText;
                     }
+                  
 
 
 
