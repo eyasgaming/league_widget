@@ -1,5 +1,30 @@
 const template = document.createElement('template');
 
+// Change special characters in PT to ASCII
+function convertPortugueseToAscii(input) {
+    const portugueseToAscii = {
+        'Á': 'A', 'á': 'a',
+        'Â': 'A', 'â': 'a',
+        'À': 'A', 'à': 'a',
+        'Ã': 'A', 'ã': 'a',
+        'É': 'E', 'é': 'e',
+        'Ê': 'E', 'ê': 'e',
+        'È': 'E', 'è': 'e',
+        'Í': 'I', 'í': 'i',
+        'Î': 'I', 'î': 'i',
+        'Ì': 'I', 'ì': 'i',
+        'Ó': 'O', 'ó': 'o',
+        'Ô': 'O', 'ô': 'o',
+        'Ò': 'O', 'ò': 'o',
+        'Õ': 'O', 'õ': 'o',
+        'Ú': 'U', 'ú': 'u',
+        'Û': 'U', 'û': 'u',
+        'Ù': 'U', 'ù': 'u',
+        'Ç': 'C', 'ç': 'c'
+    };
+    return input.replace(/[ÁáÂâÀàÃãÉéÊêÈèÍíÎîÌìÓóÔôÒòÕõÚúÛûÙùÇç]/g, match => portugueseToAscii[match] || match);
+}
+
 /****
  * 
  * usage:    <league-events leagueId="1000094985" loadingText="Loading..." drawText="draw" winText="to win">No Matches currently avaliable</league-events>
@@ -143,9 +168,9 @@ template.innerHTML = `
     }
     
        .event_test img {
-        width: 80px; /* Make the image fill the entire div */
-        height: 30px; /* Make the image fill the entire div */
-        padding: 12px 5px 6px 5px; /* Optional: just make the image look better */
+        width: 80px; 
+        height: 30px; 
+        padding: 12px 5px 6px 5px; 
         margin-left: 20px;
     }
       
@@ -287,9 +312,9 @@ class League extends HTMLElement {
             console.log("cambiando estilos")
             this.$league.style.display = 'flex';
             this.$league.style.flexWrap = 'nowrap';
-            this.$league.style.overflowX= 'auto';
+            this.$league.style.overflowX = 'auto';
 
-            
+
 
 
             const eventItems = this.$league.querySelectorAll('.event_data');
@@ -299,13 +324,13 @@ class League extends HTMLElement {
 
             const eventName = this.$league.querySelectorAll('.event_name');
             eventName.forEach(item => {
-                
-                
+
+
             });
 
             const outcomeDate = this.$league.querySelectorAll('.event_date');
             outcomeDate.forEach(item => {
-                
+
             });
 
             const outcomeNames = this.$league.querySelectorAll('.outcome_name');
@@ -485,14 +510,16 @@ class League extends HTMLElement {
 
             var localDate = new Date(event.start);
 
-            // Obtener el día y el mes en formato "dd/mm"
+            // BR local hour correction 
+            localDate.setHours(localDate.getHours() - 5);
+
             const day = localDate.getDate().toString().padStart(2, '0');
             const month = (localDate.getMonth() + 1).toString().padStart(2, '0');
+            const hours = localDate.getHours().toString().padStart(2, '0');
+            const minutes = localDate.getMinutes().toString().padStart(2, '0');
 
-            // Crear una cadena en formato "dd/mm"
-            const formattedDate = `${day}/${month}`;
+            const formattedDate = `${day}/${month} ${hours}:${minutes}`;
 
-            // Crear un elemento div para la fecha formateada
             const $eventDate = document.createElement('div');
             $eventDate.innerHTML = formattedDate;
             $eventDate.className = "event_date";
@@ -513,29 +540,32 @@ class League extends HTMLElement {
                 betOffer.outcomes.forEach((outcome) => {
                     const $outcome = document.createElement('div');
                     $outcome.className = this.getOutcomeDivName(outcome);
-                  
+
                     const $outcomeName = document.createElement('div');
                     $outcomeName.className = "outcome_name";
                     const teamValue = $outcome.className === "home" ? "home" : "away";
+
+
                     const teamName = event[`${teamValue}Name`]?.toLowerCase().replace(/\s/g, '-') || '';
+                    const asciiTeamName = convertPortugueseToAscii(teamName);
                     const outcomeText = this.getOutcomeText(event, outcome);
                     const teamPrinted = event[`${teamValue}Name`]?.toLowerCase().replace(/\s/g, '-').replace(/-\w{2}$/, '');
-                  
+
                     // Truncar el nombre a 10 caracteres y agregar puntos suspensivos si es más largo
-                    const truncatedName = teamPrinted.length > 15 ? teamPrinted.substring(0, 15) + '...' : teamPrinted;
-                  
-                    if ($outcome.className !== "draw") {
-                      $outcomeName.innerHTML = truncatedName;
+                    const truncatedName = teamPrinted.length > 14 ? teamPrinted.substring(0, 14) + '...' : teamPrinted;
+
+                if ($outcome.className !== "draw") {
+                        $outcomeName.innerHTML = truncatedName;
                     } else {
-                      $outcomeName.innerHTML = outcomeText;
+                        $outcomeName.innerHTML = outcomeText;
                     }
-                  
+
 
 
 
                     //Home or away shirt
 
-                    const imageUrlFinal = `https://lancebet-com-prod.eyasgaming.net/content/dam/eyas-web/images/team-colours/football/${teamName}-${teamValue}.png.webp`
+                    const imageUrlFinal = `https://lancebet-com-prod.eyasgaming.net/content/dam/eyas-web/images/team-colours/football/${asciiTeamName}-${teamValue}.png.webp`
 
                     const imageUrlFinalAux = `https://lancebet-com-prod.eyasgaming.net/content/dam/eyas-web/images/team-colours/football/generic-${teamValue}.png.webp`;
 
